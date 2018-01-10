@@ -17,7 +17,7 @@ void setup() {
   }
   Collections.sort(people, new Sortbyage());
 
-  dmap = new dotMap(35, 35, width-120, height-100);
+  dmap = new dotMap(120, 120, width-120, height-120);
   dmap.load();
 }
 
@@ -25,13 +25,6 @@ void draw() {
   background(#0f2539);
   dmap.display();
   fill(255);
-
-  int cc = 1;
-  for (pnt p : points) {
-    fill(255);
-    text(cc, p.x-3, p.y-10);
-    cc++;
-  }
 }
 
 //used for buttoint c;ns

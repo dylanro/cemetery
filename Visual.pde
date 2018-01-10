@@ -72,7 +72,7 @@ class pnt {
 
 //-------------------------------------------------
 class dotMap {
-  int x, y, w, h;
+  int x, y, w, h, count;
 
   dotMap(int x, int y, int w, int h) {
     this.x = x;
@@ -81,9 +81,11 @@ class dotMap {
     this.h = h;
   }
   void load() {
-    for (int i = y; i<h; i+=h/12) {
-      for (int j = x; j<w+(w/52); j+=w/51) {
-        points.add(new pnt(j, i, 10, people.get(0), #ffffff));
+    //the increment is 4 more than the actual size? works
+    for (int i = y; i<=h; i+=h/16) {
+      for (int j = x; j<=w; j+=w/55) {
+        points.add(new pnt(j, i, 10, people.get(count), #ffffff));
+        count++;
       }
     }
   }
@@ -92,7 +94,7 @@ class dotMap {
       p.display();
 
       if (p.hover()) {
-        fill(0);
+        fill(255);
         text(p.o.name + "\n" + p.o.date + "\n" + p.o.age + "\n" + p.o.address, p.x, p.y-50);
         if (mousePressed) {
           p.col = #27ae60;
