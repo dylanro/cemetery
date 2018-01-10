@@ -33,6 +33,7 @@ void setup() {
 void draw() {
   background(#0f2539);
   dmap.display();
+  dmap.selectFromRange(0, 7);
   bbar.display();
 }
 

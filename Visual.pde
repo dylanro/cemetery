@@ -98,6 +98,18 @@ class dotMap {
       }
     }
   }
+
+  void selectFromRange(int min, int max) {
+    for (pnt p : points) {
+      if (p.o.age > min && p.o.age < max) {
+        p.col=255;
+        System.out.println("test");
+      } else {
+        p.col = 0;
+      }
+    }
+  }
+
   void display() {
     for (pnt p : points) {
       p.display();
