@@ -1,3 +1,4 @@
+//------------------------------------------------------------------------------
 class button {
   int x, y, w, h, round;
   String label;
@@ -22,8 +23,8 @@ class button {
     }
     rect(x, y, w, h, round);
     fill(255);
-    textSize(h/1.8);
-    text(label, x+w/3.8, y+h/1.4);
+    textSize(h/4);
+    text(label, x+w/4, y+h/1.8);
   }
 
   boolean hover() {
@@ -68,9 +69,17 @@ class pnt {
     }
     return false;
   }
+
+  void toggleRange(int min, int max) {
+    for (pnt p : points) {
+      if (p.o.age > min && p.o.age < max) {
+        p.col = #ffffff;
+      }
+    }
+  }
 }
 
-//-------------------------------------------------
+//------------------------------------------------------------------------------
 class dotMap {
   int x, y, w, h, count;
 
@@ -95,6 +104,7 @@ class dotMap {
 
       if (p.hover()) {
         fill(255);
+        textSize(10);
         text(p.o.name + "\n" + p.o.date + "\n" + p.o.age + "\n" + p.o.address, p.x, p.y-50);
         if (mousePressed) {
           p.col = #27ae60;
@@ -104,7 +114,7 @@ class dotMap {
   }
 }
 
-//------------------------------
+//------------------------------------------------------------------------------
 class lineGraph {
 
   void display() {
@@ -115,3 +125,30 @@ class barGraph {
   void display() {
   }
 }
+//------------------------------------------------------------------------------
+class bottom_bar {
+  int x, y, w, h;
+  String[] labels;
+
+  bottom_bar(int x, int y, int w, int h, String[] labels) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.labels = labels;
+  }
+
+  void load() {
+    for (int i = x; i < w; i+=w/labels.length) {
+      buttons.add(new button(i, y, w/labels.length, h, 0, labels[i/(w/labels.length)]));
+    }
+  }
+
+  void display() {
+    for (button b : buttons) {
+      b.display();
+    }
+  }
+}
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------

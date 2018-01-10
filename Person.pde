@@ -15,7 +15,7 @@ class Person {
     return "name-> " + this.name + " \ndate-> " + this.date + " \nage-> " + age + " \naddress-> " + address + "\n\n";
   }
 }
-
+//------------------------------------------------------------------------------
 class Sortbyname implements Comparator<Person> {
   @Override
     int compare(Person p1, Person p2) {
@@ -34,7 +34,7 @@ class Sortbyage implements Comparator<Person> {
     } else return 0;
   }
 }
-
+//------------------------------------------------------------------------------
 String extractAge(String line) {
   return line.replaceAll(".*\\d{4}\\s(.{4})\\s.*", "$1");
 }
@@ -50,7 +50,7 @@ String extractDate(String line) {
 String extractAddress(String line) {
   return line.replaceAll(".*\\d{4}.{6}(.*)", "$1");
 }
-
+//------------------------------------------------------------------------------
 float convertAge(String age) {
   float num = 0;
   if (age.contains("w")) {
