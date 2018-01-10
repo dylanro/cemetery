@@ -127,20 +127,20 @@ class barGraph {
 }
 //------------------------------------------------------------------------------
 class bottom_bar {
-  int x, y, w, h;
-  String[] labels;
+  int x, y, w, h, buttonnum, spacing;
 
-  bottom_bar(int x, int y, int w, int h, String[] labels) {
+  bottom_bar(int x, int y, int w, int h, int buttonnum, int spacing) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.labels = labels;
+    this.buttonnum = buttonnum;
+    this.spacing = spacing;
   }
 
   void load() {
-    for (int i = x; i < w; i+=w/labels.length) {
-      buttons.add(new button(i, y, w/labels.length, h, 0, labels[i/(w/labels.length)]));
+    for (int i = x+spacing; i < w-5; i+=((w-spacing)/buttonnum)) {
+      buttons.add(new button(i, y-spacing, w/buttonnum-spacing, h, 0, "test"));
     }
   }
 
