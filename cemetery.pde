@@ -4,16 +4,15 @@ import java.util.Map;
 button b;
 Person person;
 dotMap dmap;
-bottom_bar bbar;
+Selectionbar bottom;
+Selectionbar top;
 ArrayList<Person> people;
-ArrayList<pnt> points;
 ArrayList<button> buttons;
 
 void setup() {
   size(1250, 500);
 
   people = new ArrayList<Person>();
-  points = new ArrayList<pnt>();
   buttons = new ArrayList<button>();
 
   String[] data = loadStrings("cemeterydata.txt");
@@ -26,15 +25,19 @@ void setup() {
   dmap = new dotMap(120, 120, width-120, height-120);
   dmap.load();
 
-  bbar = new bottom_bar(0, height-75, width, 75, 5, 4);
-  bbar.load();
+  top = new Selectionbar(0, 0, width, 40, 4);
+
+  bottom = new Selectionbar(0, height-75, width, 75, 4);
 }
 //------------------------------------------------------------------------------
 void draw() {
   background(#0f2539);
   dmap.display();
   dmap.selectFromRange(0, 7);
-  bbar.display();
+
+  bottom.display();
+
+  top.display();
 }
 
 void mouseClicked() {
