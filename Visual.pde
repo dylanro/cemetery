@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 class button {
-  int x, y, w, h, round;
+  int x, y, w, h, round, textsize, value;
   String label;
   color basecol, highlightcol;
 
@@ -13,6 +13,8 @@ class button {
     this.label = "";
     this.basecol = 0;
     this.highlightcol = 51;
+    textsize = 10;
+    this.value = 0;
   }
 
   void display() {
@@ -26,7 +28,7 @@ class button {
     }
     rect(x, y, w, h, round);
     fill(255);
-    textSize(h/4);
+    textSize(textsize);
     text(label, x+w/4, y+h/1.8);
   }
 
@@ -38,8 +40,9 @@ class button {
     }
     return false;
   }
-  void setLabel(String label) {
+  void setLabel(String label, int val) {
     this.label = label;
+    this.value = val;
   }
 
   void setRound(int round) {
@@ -52,6 +55,10 @@ class button {
 
   void setBase(int col) {
     this.basecol = col;
+  }
+
+  void setValue(int val) {
+    this.value = val;
   }
 }
 
@@ -149,7 +156,8 @@ class barGraph {
 //------------------------------------------------------------------------------
 class Selectionbar {
   int x, y, w, h, spacing, buttonnum;
-  List<String> labels = new ArrayList<String>();
+  List<Label>  labels = new ArrayList<Label>();
+  List<button> buttons = new ArrayList<button>();
 
   Selectionbar(int x, int y, int w, int h, int spacing) {
     this.x = x;
@@ -157,14 +165,6 @@ class Selectionbar {
     this.w = w;
     this.h = h;
     this.spacing = spacing;
-
-    if (labels.size() == 0) {
-      labels.add("labels are empty!");
-    }
-
-    for (int i = x+spacing; i < w-5; i+=((w-spacing)/labels.size())) {
-      buttons.add(new button(i, y-spacing, w/labels.size()-spacing, h));
-    }
   }
 
   void display() {
@@ -173,9 +173,47 @@ class Selectionbar {
     }
   }
 
+  void load() {
+    try {
+      for (int i = x+spacing; i < w-spacing; i+=(w-spacing*labels.size())/labels.size()+spacing) {
+        buttons.add(new button(i, y-spacing, (w-spacing*labels.size())/labels.size(), h));
+      }
+
+      for (int i = 0; i< labels.size(); i++) {
+        buttons.get(i).setLabel(labels.get(i).s, labels.get(i).val);
+      }
+    }
+    catch(ArithmeticException a) { 
+      System.out.println("At least one label must be added in order to create the selection bar!\nThe method addLabel() is used to add more labels to your selectionbar\nUse \" \" to make the button empty!");
+    }
+  }
+
+  void addLabel(String s, int val) {
+    labels.add(new Label(s, val));
+  }
+
   void addLabel(String s) {
-    labels.add(s);
+    labels.add(new Label(s, 0));
+  }
+
+  void addLabel(String s, int min, int max) {
+    labels.add(new Label(s, min, max));
   }
 }
 //------------------------------------------------------------------------------
+class Label {
+  String s;
+  int val, min, max;
+
+  Label(String s, int val) {
+    this.s = s;
+    this.val = val;
+  }
+
+  Label(String s, int min, int max) {
+    this.s = s;
+    this.min = min;
+    this. max = max;
+  }
+}
 //------------------------------------------------------------------------------
