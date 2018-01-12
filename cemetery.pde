@@ -30,25 +30,35 @@ void setup() {
   top.load();
 
   bottom = new Selectionbar(0, height-75, width, 75, 4);
-  bottom.addLabel("Infancy", 0-2);
-  bottom.addLabel("Toddlerhood (2 and 3)");
-  bottom.addLabel("Early School Age (4 – 6)");
-  bottom.addLabel("Middle Childhood (6 – 12)");
-  bottom.addLabel("Early Adolescence (12 – 18)");
-  bottom.addLabel("Later Adolescence (18 – 24)");
-  bottom.addLabel("Early Adulthood (24 – 34)");
-  bottom.addLabel("Middle Adulthood (34 – 60)");
-  bottom.addLabel("Later Adulthood (60 – 75)");
-  bottom.addLabel("Very Old Age (75+)");
+  bottom.addLabel("Infancy\n(0-2)", 0, 2);
+  bottom.addLabel("Toddlerhood\n(2-3)", 2, 3);
+  bottom.addLabel("Early School Age\n(4-6)", 4, 6);
+  bottom.addLabel("Middle Childhood\n(6-12)", 6, 12);
+  bottom.addLabel("Early Adolescence\n(12-18)", 12, 18);
+  bottom.addLabel("Later Adolescence\n(18-24)", 18, 24);
+  bottom.addLabel("Early Adulthood\n(24-34)", 24, 34);
+  bottom.addLabel("Middle Adulthood\n(34-60)", 34, 60);
+  bottom.addLabel("Later Adulthood\n(60-75)", 60, 75);
+  bottom.addLabel("Very Old Age\n(75+)", 75, 200);
   bottom.load();
 }
 //------------------------------------------------------------------------------
 void draw() {
   background(#0f2539);
-  dmap.display();
-  dmap.selectFromRange(0, );
+
+  for (button b : bottom.buttons) {
+    if (b.hover()==true && mousePressed) {
+      dmap.selectFromRange(b.min, b.max);
+    }
+  }
 
   bottom.display();
 
   top.display();
+
+  dmap.display();
+}
+
+void mouseClicked() {
+  System.out.println(mouseX + "   " + mouseY);
 }

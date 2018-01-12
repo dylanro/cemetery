@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 class button {
-  int x, y, w, h, round, textsize, value;
+  int x, y, w, h, round, textsize, value, min, max;
   String label;
   color basecol, highlightcol;
 
@@ -15,6 +15,8 @@ class button {
     this.highlightcol = 51;
     textsize = 10;
     this.value = 0;
+    this.min = 0;
+    this.max = 0;
   }
 
   void display() {
@@ -45,6 +47,12 @@ class button {
     this.value = val;
   }
 
+  void setLabel(String label, int min, int max) {
+    this.label = label;
+    this.min = min;
+    this.max = max;
+  }
+
   void setRound(int round) {
     this.round = round;
   }
@@ -55,10 +63,6 @@ class button {
 
   void setBase(int col) {
     this.basecol = col;
-  }
-
-  void setValue(int val) {
-    this.value = val;
   }
 }
 
@@ -129,16 +133,39 @@ class dotMap {
   void display() {
     for (pnt p : points) {
       p.display();
+    }
 
+    for (pnt p : points) {
       if (p.hover()) {
-        fill(255);
+        stroke(255);
         textSize(10);
-        text(p.o.name + "\n" + p.o.date + "\n" + p.o.age + "\n" + p.o.address, p.x, p.y-50);
-        if (mousePressed) {
-          p.col = #27ae60;
+        if (mouseY < 153) {
+          if (p.o.address.length() > p.o.name.length()) {
+            fill(51);
+            rect(p.x+7, p.y-15, p.o.address.length()*5.5, 70);
+          } else {
+            fill(51);
+            rect(p.x+7, p.y-15, p.o.name.length()*5.5, 70);
+          }
+          fill(255);
+          text(p.o.name + "\n" + p.o.date + "\n" + p.o.age + "\n" + p.o.address, p.x+10, p.y);
+        } else {
+          if (p.o.address.length() > p.o.name.length()) {
+            fill(51);
+            rect(p.x+7, p.y-65, p.o.address.length()*5.5, 72);
+          } else {
+            fill(51);
+            rect(p.x+7, p.y-65, p.o.name.length()*5.5, 72);
+          }
+          fill(255);
+          text(p.o.name + "\n" + p.o.date + "\n" + p.o.age + "\n" + p.o.address, p.x+10, p.y-50);
         }
       }
     }
+
+    fill(255);
+    textSize(13.25);
+    text("This \"Dot Map\" is a visual representation of different age groups in the cemetery. Hover over and click on the bottom buttons\n to select different age groups. These age groups were collected from \"Development Through Life\" by Newman & Newman.", x, y-50);
   }
 }
 
@@ -162,9 +189,9 @@ class Selectionbar {
   Selectionbar(int x, int y, int w, int h, int spacing) {
     this.x = x;
     this.y = y;
-    this.w = w;
     this.h = h;
     this.spacing = spacing;
+    this.w = w;
   }
 
   void display() {
@@ -175,12 +202,12 @@ class Selectionbar {
 
   void load() {
     try {
-      for (int i = x+spacing; i < w-spacing; i+=(w-spacing*labels.size())/labels.size()+spacing) {
+      for (int i = x+spacing; i < w; i+=(w-spacing*labels.size())/labels.size()+spacing) {
         buttons.add(new button(i, y-spacing, (w-spacing*labels.size())/labels.size(), h));
       }
 
       for (int i = 0; i< labels.size(); i++) {
-        buttons.get(i).setLabel(labels.get(i).s, labels.get(i).val);
+        buttons.get(i).setLabel(labels.get(i).s, labels.get(i).min, labels.get(i).max);
       }
     }
     catch(ArithmeticException a) { 
