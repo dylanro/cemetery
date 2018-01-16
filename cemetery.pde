@@ -6,14 +6,22 @@ Person person;
 dotMap dmap;
 Selectionbar bottom;
 Selectionbar top;
-ArrayList<Person> people;
+List<Person> people;
+List<pnt> pnts;
+String[] months;
+HashMap<String, Integer> deathinmonths;
+
+boolean showhome = true, showdot, showline;
 
 void setup() {
   size(1250, 500);
 
   people = new ArrayList<Person>();
+  pnts = new ArrayList<pnt>();
+  deathinmonths = new HashMap<String, Integer>();
 
   String[] data = loadStrings("cemeterydata.txt");
+  months = loadStrings("months.txt");
 
   for (int i = 4; i<data.length; i++) {
     people.add(new Person(extractName(data[i]).toLowerCase(), extractDate(data[i]).toLowerCase(), convertAge(extractAge(data[i])), extractAddress(data[i])));
@@ -41,24 +49,64 @@ void setup() {
   bottom.addLabel("Later Adulthood\n(60-75)", 60, 75);
   bottom.addLabel("Very Old Age\n(75+)", 75, 200);
   bottom.load();
+
+  for (String m : months) {
+    deathinmonths.put(m, deathsInMonth(m));
+  }
 }
 //------------------------------------------------------------------------------
 void draw() {
   background(#0f2539);
 
-  for (button b : bottom.buttons) {
-    if (b.hover()==true && mousePressed) {
-      dmap.selectFromRange(b.min, b.max);
+  if (showhome) {
+    textSize(20);
+    text("Cemetery Data Visual", 500, 220);
+    textSize(12);
+    text("Use the Top Bar to Navigate", 510, 250);
+  }
+
+  if (showline) {
+    drawGraph(12*95, 400, 12);
+    for (pnt i : pnts) {
+      pushMatrix();
+      noStroke();
+      fill(255, 255, 255, 50);
+      translate(50, 50);
+      i.display();
+      i.hover();
+      popMatrix();
     }
   }
 
-  bottom.display();
-
+  //---DOT MAP---
+  if (showdot) {
+    strokeWeight(1);
+    bottom.display();
+    dmap.display();
+    for (button b : bottom.buttons) {
+      if (b.hover()==true && mousePressed) {
+        dmap.selectFromRange(b.min, b.max);
+      }
+    }
+  }
+  strokeWeight(1);
   top.display();
-
-  dmap.display();
 }
 
 void mouseClicked() {
-  System.out.println(mouseX + "   " + mouseY);
+  if (top.buttons.get(0).hover()) {
+    exit();
+  }
+
+  if (top.buttons.get(1).hover()) {
+    showdot = true;
+    showhome = false;
+    showline = false;
+  }
+
+  if (top.buttons.get(2).hover()) {
+    showdot = false;
+    showhome = false;
+    showline = true;
+  }
 }

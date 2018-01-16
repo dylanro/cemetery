@@ -57,11 +57,11 @@ class button {
     this.round = round;
   }
 
-  void setHighlight(int col) {
+  void setHighlight(color col) {
     this.highlightcol = col;
   }
 
-  void setBase(int col) {
+  void setBase(color col) {
     this.basecol = col;
   }
 }
@@ -71,6 +71,11 @@ class pnt {
   int x, y, r;
   Person o;
   color col;
+
+  pnt(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
 
   pnt(int x, int y, int r, Person o, color col) {
     this.x = x;
@@ -170,17 +175,6 @@ class dotMap {
 }
 
 //------------------------------------------------------------------------------
-class lineGraph {
-
-  void display() {
-  }
-}
-
-class barGraph {
-  void display() {
-  }
-}
-//------------------------------------------------------------------------------
 class Selectionbar {
   int x, y, w, h, spacing, buttonnum;
   List<Label>  labels = new ArrayList<Label>();
@@ -244,3 +238,32 @@ class Label {
   }
 }
 //------------------------------------------------------------------------------
+void drawGraph(int w, int h, int inc) {
+  pushMatrix();
+  translate(50, 50);
+  stroke(#359768);
+  strokeWeight(5);
+  line(0, 0, 0, h);
+  line(0, h, w, h);
+
+  for (int i = 1; i<12; i+=1) {
+    strokeWeight(2);
+    stroke(#028090);
+    line(i*w/inc, h-deathinmonths.get(months[i-1])*4, i*w/inc+w/inc, h-deathinmonths.get(months[i])*4);
+  }
+
+  for (int i = 1; i<13; i+=1) {
+    strokeWeight(7);
+    stroke(#FCE38A);
+    pnts.add(new pnt(i*w/inc, h-deathinmonths.get(months[i-1])*4));
+
+    fill(#FFFFFF);
+    strokeWeight(2);
+    stroke(255);
+    line(i*w/inc, h-5, i*w/inc, h+5);
+    text(months[i-1], i*w/inc-10, h+20);
+  }
+  popMatrix();
+  textSize(20);
+  text("Number of People Burried in a Specific Month", 70, 63);
+}

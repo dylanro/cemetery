@@ -62,3 +62,13 @@ float convertAge(String age) {
   }
   return num;
 }
+//------------------------------------------------------------------------------
+int deathsInMonth(String month) {
+  int sum = 0;
+  for (Person p : people) {
+    if (p.date.substring(3, 6).equals(month.toLowerCase())) {
+      sum++;
+    }
+  }
+  return sum;
+}
