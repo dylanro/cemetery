@@ -31,7 +31,9 @@ class button {
     rect(x, y, w, h, round);
     fill(255);
     textSize(textsize);
-    text(label, x+w/4, y+h/1.8);
+    textAlign(CENTER, CENTER);
+    text(label, x+w/2, y+h/2);
+    textAlign(CORNER, CORNER);
   }
 
   boolean hover() {
@@ -116,10 +118,11 @@ class dotMap {
     this.w = w;
     this.h = h;
   }
-  void load() {
+
+  void load(List<Person> p) {
     for (int i = y; i<=h; i+=h/16) {
       for (int j = x; j<=w; j+=w/55) {
-        points.add(new pnt(j, i, 10, people.get(count), #ffffff));
+        points.add(new pnt(j, i, 10, p.get(count), #ffffff));
         count++;
       }
     }
@@ -127,6 +130,9 @@ class dotMap {
 
   void selectFromRange(int min, int max) {
     for (pnt p : points) {
+      while (p.col > 0) {
+        p.col--;
+      }
       if (p.o.age > min && p.o.age < max) {
         p.col=255;
       } else {
@@ -139,6 +145,8 @@ class dotMap {
     for (pnt p : points) {
       p.display();
     }
+
+
 
     for (pnt p : points) {
       if (p.hover()) {
@@ -167,10 +175,6 @@ class dotMap {
         }
       }
     }
-
-    fill(255);
-    textSize(13.25);
-    text("This \"Dot Map\" is a visual representation of different age groups in the cemetery. Hover over and click on the bottom buttons\n to select different age groups. These age groups were collected from \"Development Through Life\" by Newman & Newman.", x, y-50);
   }
 }
 
@@ -197,7 +201,7 @@ class Selectionbar {
   void load() {
     try {
       for (int i = x+spacing; i < w; i+=(w-spacing*labels.size())/labels.size()+spacing) {
-        buttons.add(new button(i, y-spacing, (w-spacing*labels.size())/labels.size(), h));
+        buttons.add(new button(i, y, (w-spacing*labels.size())/labels.size(), h));
       }
 
       for (int i = 0; i< labels.size(); i++) {
@@ -266,4 +270,77 @@ void drawGraph(int w, int h, int inc) {
   popMatrix();
   textSize(20);
   text("Number of People Burried in a Specific Month", 70, 63);
+}
+//------------------------------------------------------------------------------
+class Switch {
+  int x, y, w, h, tempx, tempxspeed;
+  color col;
+  boolean isleft=true, isright;
+  String label1, label2;
+
+  Switch(int x, int y, int w, int h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.tempx = x;
+  }
+
+  void setLabels(String label1, String label2) {
+    this.label1 = label1;
+    this.label2 = label2;
+  }
+
+  void display() {
+    noStroke();
+    fill(col);
+    rect(x, y, w, h, 3);
+    fill(255, 255, 255, 100);
+    rect(tempx, y, w/2, h, 3);
+
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(label1, x+w/4, y+h/2.5);
+    text(label2, x+w*3/4, y+h/2.5);
+    textAlign(CORNER, CORNER);
+  }
+
+  void move() {
+    tempx+=tempxspeed;
+    if (tempx <= x) {
+      tempxspeed=0;
+      tempx = x;
+      isleft=true;
+      isright=false;
+    }
+    if (tempx >= x+w/2) {
+      tempxspeed=0;
+      tempx=x+w/2;
+      isleft=false;
+      isright=true;
+    }
+    if (isright && hover() && mousePressed) {
+      tempxspeed=-6;
+    }
+
+    if (isleft && hover() && mousePressed) {
+      tempxspeed=6;
+    }
+  }
+
+  boolean hover() {
+    if (mouseX > x && mouseX < x+w) {
+      if (mouseY > y && mouseY < y+h) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  boolean getSide() {
+    if (isleft) {
+      return true;
+    }
+    return false;
+  }
 }

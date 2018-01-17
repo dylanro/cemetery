@@ -1,12 +1,12 @@
 import java.util.*;
 
-import java.util.Map;
-button b;
 Person person;
-dotMap dmap;
-Selectionbar bottom;
-Selectionbar top;
+dotMap dmapname;
+dotMap dmapage;
+Switch s1;
+Selectionbar top, bottom;
 List<Person> people;
+List peopleage, peoplename;
 List<pnt> pnts;
 String[] months;
 HashMap<String, Integer> deathinmonths;
@@ -18,6 +18,8 @@ void setup() {
 
   people = new ArrayList<Person>();
   pnts = new ArrayList<pnt>();
+  s1 = new Switch(574, 58, 100, 17);
+
   deathinmonths = new HashMap<String, Integer>();
 
   String[] data = loadStrings("cemeterydata.txt");
@@ -26,10 +28,18 @@ void setup() {
   for (int i = 4; i<data.length; i++) {
     people.add(new Person(extractName(data[i]).toLowerCase(), extractDate(data[i]).toLowerCase(), convertAge(extractAge(data[i])), extractAddress(data[i])));
   }
-  Collections.sort(people, new Sortbyage());
 
-  dmap = new dotMap(120, 120, width-120, height-120);
-  dmap.load();
+  peopleage = new ArrayList<Person>(people);
+  peoplename = new ArrayList<Person>(people);
+
+  Collections.sort(peopleage, new Agesort());
+  Collections.sort(peoplename, new  Namesort());
+
+  dmapname = new dotMap(120, 120, width-120, height-120);
+  dmapname.load(peoplename);
+
+  dmapage = new dotMap(120, 120, width-120, height-120);
+  dmapage.load(peopleage);
 
   top = new Selectionbar(0, 0, width, 40, 4);
   top.addLabel("Quit");
@@ -37,7 +47,7 @@ void setup() {
   top.addLabel("Line Graph");
   top.load();
 
-  bottom = new Selectionbar(0, height-75, width, 75, 4);
+  bottom = new Selectionbar(0, height-40, width, 40, 4);
   bottom.addLabel("Infancy\n(0-2)", 0, 2);
   bottom.addLabel("Toddlerhood\n(2-3)", 2, 3);
   bottom.addLabel("Early School Age\n(4-6)", 4, 6);
@@ -58,6 +68,7 @@ void setup() {
 void draw() {
   background(#0f2539);
 
+  //--Home Screen--
   if (showhome) {
     textSize(20);
     text("Cemetery Data Visual", 500, 220);
@@ -65,6 +76,7 @@ void draw() {
     text("Use the Top Bar to Navigate", 510, 250);
   }
 
+  //--Line Graph--
   if (showline) {
     drawGraph(12*95, 400, 12);
     for (pnt i : pnts) {
@@ -78,14 +90,25 @@ void draw() {
     }
   }
 
-  //---DOT MAP---
+  //---Dot Map---
   if (showdot) {
+    s1.setLabels("Name", "Age");
+    s1.display();
+    s1.move();
     strokeWeight(1);
     bottom.display();
-    dmap.display();
+
+    if (s1.getSide()) {
+      dmapname.display();
+    }
+    if (s1.getSide()==false) {
+      dmapage.display();
+    }
+
     for (button b : bottom.buttons) {
-      if (b.hover()==true && mousePressed) {
-        dmap.selectFromRange(b.min, b.max);
+      if (b.hover() && mousePressed) {
+        dmapname.selectFromRange(b.min, b.max);
+        dmapage.selectFromRange(b.min, b.max);
       }
     }
   }

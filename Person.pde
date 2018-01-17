@@ -16,14 +16,14 @@ class Person {
   }
 }
 //------------------------------------------------------------------------------
-class Sortbyname implements Comparator<Person> {
+class Namesort implements Comparator<Person> {
   @Override
     int compare(Person p1, Person p2) {
     return p1.name.compareTo(p2.name);
   }
 }
 
-class Sortbyage implements Comparator<Person> {
+class Agesort implements Comparator<Person> {
   @Override
     int compare(Person p1, Person p2) {
     if (p1.age > p2.age) {
