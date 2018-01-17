@@ -90,11 +90,11 @@ class pnt {
   void display() {
     if (hover()==false) {
       noStroke();
-      fill(col, col, col);
+      fill(3, col, col);
     }
     if (hover()) {
       stroke(255);
-      fill(col, col, col);
+      fill(34, 2, col);
     }
     ellipse(x, y, r, r);
   }
@@ -129,12 +129,13 @@ class dotMap {
   }
 
   void selectFromRange(int min, int max) {
+    int c = 100;
     for (pnt p : points) {
-      while (p.col > 0) {
-        p.col--;
-      }
       if (p.o.age > min && p.o.age < max) {
-        p.col=255;
+        if (p.col < 255) {
+          c+=2;
+          p.col=c;
+        }
       } else {
         p.col = 0;
       }
